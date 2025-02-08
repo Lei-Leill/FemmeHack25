@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Match</title>
+</head>
+<body>
+    <h1>Resume and Job Description Match</h1>
+    
+    <label for="resume">Resume Text:</label>
+    <textarea id="resume" rows="5" cols="50"></textarea><br><br>
+    
+    <label for="job_desc">Job Description Text:</label>
+    <textarea id="job_desc" rows="5" cols="50"></textarea><br><br>
+    
+    <button onclick="submitData()">Check Match</button>
+    
+    <h3>Match Score: <span id="match_score">N/A</span></h3>
+
+    <script>
+        function submitData() {
+            // Get values from input fields
+            const resume = document.getElementById('resume').value;
+            const job_desc = document.getElementById('job_desc').value;
+            
+            // Prepare data to send
+            const data = { resume: resume, job_desc: job_desc };
+            
+            // Send data to Flask backend
+            fetch('http://127.0.0.1:5000/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('match_score').innerText = data.match_score.toFixed(2) + '%';
+            })
+            .catch(error => console.log('Error:', error));
+        }
+    </script>
+</body>
+</html>
