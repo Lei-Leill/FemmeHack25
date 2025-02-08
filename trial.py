@@ -7,6 +7,11 @@ import base64
 st.title("[Name]")
 st.write("Ask me to recommend any kind of event you want to attend!")
 
+# client = genai.Client(api_key="AIzaSyAWt8blzVszVkfvlh1Rlpf8Qjn5MicEQVA")
+# response = client.models.generate_content(
+#     model="gemini-2.0-flash", contents="Explain how AI works"
+# )
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
@@ -18,9 +23,10 @@ for message in st.session_state["messages"]:
 
 def generate_response(user_input):
     client = genai.Client(
-        vertexai=True,
-        project="opensource-406515",
-        location="us-central1",
+        vertexai=False,
+        api_key="AIzaSyAWt8blzVszVkfvlh1Rlpf8Qjn5MicEQVA",
+        # project="opensource-406515",
+        # location="us-central1",
     )
     
     textsi_1 = """You are an intelligent event recommendation assistant that helps users discover events happening near them based on their interests, location, budget, and availability.
@@ -59,7 +65,7 @@ You are a personalized event discovery assistant."""
     
     response_text = ""
     for chunk in client.models.generate_content_stream(
-        model="gemini-2.0-flash-001",
+        model="gemini-1.5-flash",
         contents=contents,
         config=generate_content_config,
     ):
